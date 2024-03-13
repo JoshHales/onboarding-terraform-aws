@@ -21,3 +21,7 @@ variable "public_subnet_1_cidr" {
 variable "public_subnet_2_cidr" {
   description = "cidr block for public subnet 2"
 }
+
+variable "ec2_instance_type" {
+  description = "type of instance"
+}

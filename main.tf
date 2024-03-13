@@ -22,3 +22,10 @@ module "vpc_networking" {
   private_subnet_1_cidr = var.private_subnet_1_cidr
   private_subnet_2_cidr = var.private_subnet_2_cidr
 }
+
+module "ec2" {
+  source = "./modules/ec2"
+  vpc_id = module.vpc_networking.vpc_id
+  ec2_instance_type = var.ec2_instance_type
+  subnet_id = module.vpc_networking.public_subnet_1a_id
+}
