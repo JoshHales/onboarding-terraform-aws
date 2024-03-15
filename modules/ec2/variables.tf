@@ -21,4 +21,5 @@ variable "name" {
 
 variable "iam_instance_profile" {
   description = "iam role to attach to instance"
+  default = ""
 }

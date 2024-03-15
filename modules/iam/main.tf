@@ -24,11 +24,29 @@ resource "aws_iam_user" "iam_user" {
   name = "jh-cli-only-user"
 }
 
-resource "aws_iam_user_policy_attachment" "iam_user_policy_attachment" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
-  user       = aws_iam_user.iam_user.name
-}
-
 resource "aws_iam_access_key" "iam_access_key" {
   user = aws_iam_user.iam_user.name
 }
+
+resource "aws_iam_role" "jh_cli_readonly" {
+  name = "jh-aws-cli-readonly"
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"]
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::779388683117:user/${aws_iam_user.iam_user.name}"
+        }
+      }
+    ]
+  })
+}
+
+#resource "aws_iam_user_policy_attachment" "iam_user_policy_attachment" {
+#  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
+#  user       = aws_iam_user.iam_user.name
+#}
+
